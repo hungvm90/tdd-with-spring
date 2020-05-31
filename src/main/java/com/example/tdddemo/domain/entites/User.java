@@ -1,4 +1,4 @@
-package com.example.tdddemo.register;
+package com.example.tdddemo.domain.entites;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

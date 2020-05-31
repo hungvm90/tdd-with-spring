@@ -1,5 +1,7 @@
-package com.example.tdddemo.register;
+package com.example.tdddemo.infra.register;
 
+import com.example.tdddemo.domain.entites.User;
+import com.example.tdddemo.domain.register.RegisterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +17,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,7 +63,55 @@ class RegisterControllerTest {
                 .andExpect(jsonPath("id").value(user.getId()))
                 .andExpect(jsonPath("email").value(user.getEmail()))
                 .andExpect(jsonPath("mobile").value(user.getMobile()))
-                .andExpect(jsonPath("password").doesNotExist());
+                .andExpect(jsonPath("password").doesNotExist())
+                .andExpect(jsonPath("createdAt").exists());
+    }
 
+    @Test
+    public void testRegisterNewUser_whenEmailIsInvalid_shouldNotAllow() throws Exception {
+        Map<String, Object> request = new HashMap<>();
+        request.put("email", "hunggmail.com");
+        request.put("mobile", "0123456789");
+        request.put("password", "123456");
+
+        mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value("EMAIL_INVALID"));
+
+        verify(registerService, times(0)).register(any());
+    }
+
+    @Test
+    public void testRegisterNewUser_whenMobileIsInvalid_shouldNotAllow() throws Exception {
+        Map<String, Object> request = new HashMap<>();
+        request.put("email", "hung@gmail.com");
+        request.put("mobile", "");
+        request.put("password", "123456");
+
+        mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value("MOBILE_INVALID"));
+
+        verify(registerService, times(0)).register(any());
+    }
+
+    @Test
+    public void testRegisterNewUser_whenPasswordIsInvalid_shouldNotAllow() throws Exception {
+        Map<String, Object> request = new HashMap<>();
+        request.put("email", "hung@gmail.com");
+        request.put("mobile", "0123456789");
+        request.put("password", "12345");
+
+        mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("code").value("PASSWORD_INVALID"));
+
+        verify(registerService, times(0)).register(any());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tdddemo.register;
+package com.example.tdddemo.infra.register;
 
 import lombok.Data;
 
