@@ -1,6 +1,7 @@
 package com.example.tdddemo.domain;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 
 public class ErrorCode {
     private int status;
@@ -56,4 +57,5 @@ public class ErrorCode {
     public static ErrorCode EMAIL_INVALID = new ErrorCode(SC_BAD_REQUEST, "EMAIL_INVALID", "Email is invalid");
     public static ErrorCode MOBILE_INVALID = new ErrorCode(SC_BAD_REQUEST, "MOBILE_INVALID", "Mobile is invalid");
     public static ErrorCode PASSWORD_INVALID = new ErrorCode(SC_BAD_REQUEST, "PASSWORD_INVALID", "Password is invalid");
+    public static ErrorCode RESOURCE_ALREADY_EXIST = new ErrorCode(SC_CONFLICT, "RESOURCE_ALREADY_EXIST", "Resource already exist");
 }
