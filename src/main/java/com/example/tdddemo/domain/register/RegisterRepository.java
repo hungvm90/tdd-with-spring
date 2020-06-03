@@ -5,5 +5,5 @@ import com.example.tdddemo.domain.entites.User;
 public interface RegisterRepository {
     User findByEmailOrMobile(String email, String mobile);
 
-    User save(User capture);
+    User save(User user);
 }

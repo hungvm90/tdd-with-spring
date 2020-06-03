@@ -56,7 +56,6 @@ class RegisterServiceTest {
     @Test
     public void testRegisterNewUser_whenEmailOrMobileExist_shouldError() throws Exception {
         try {
-            Date now = new Date();
             String email = "new_user@gmail.com";
             String mobile = "0123456789";
             User request = new User();
