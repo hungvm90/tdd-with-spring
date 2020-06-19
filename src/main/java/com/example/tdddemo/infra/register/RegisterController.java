@@ -37,6 +37,6 @@ public class RegisterController {
 
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity handEx(HttpServletRequest req, ApplicationException ex) {
-        return new ResponseEntity(ex.getErrorCode(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(ex.getErrorCode(), HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 }
